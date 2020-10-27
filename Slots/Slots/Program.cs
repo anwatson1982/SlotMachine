@@ -17,28 +17,57 @@ namespace SlotMachine3
         }
         static void Main(string[] args)
         {
-            ///Populates grid with Random numbers 0-2
+
             int row;
             int col;
             int[,] grid = new int[3, 3];
             var ranNum = new Random();
-            for (row = 0; row < 3; row++)
+            int stack = 20;
+            ///Displays welcome message with rules of the game and displays opening ammount of coins
+            welcome(stack);
+            string playGame = Console.ReadLine();
+            Console.Clear();
+            for (stack = 20; stack > 0;)
             {
-                for (col = 0; col < 3; col++)
+                coinDisplay(stack);
+                ///Populates grid with random numbers from 0 - 2 
+                for (row = 0; row < 3; row++)
                 {
-                    grid[row, col] = ranNum.Next(0, 3);
-                    Console.Write($" {grid[row, col]} ");
-                    if (col == 2)
-                        Console.WriteLine();
+                    for (col = 0; col < 3; col++)
+                    {
+                        grid[row, col] = ranNum.Next(0, 3);
+                        Console.Write($" {grid[row, col]} ");
+                        if (col == 2)
+                            Console.WriteLine();
+                    }
                 }
             }
         }
-        static void populateGrid(int[,] gameGrid, int gridRow, int gridCol)
-        {
-            Console.Write(gameGrid[gridRow, gridCol]);
-            if (gridCol == 2)
-                Console.WriteLine();
-        }
 
+        /// <summary>
+        /// Function to dispay ammount of coins users has 
+        /// </summary>
+        /// <param name="coins">Ammount of coins user left in stack</param>
+        static void coinDisplay(int coins)
+        {
+            Console.WriteLine($"******************");
+            Console.WriteLine($"You have {coins} left");
+            Console.WriteLine($"******************");
+        }
+        /// <summary>
+        /// Function for Welcome display shows users the rules of the game
+        /// </summary>
+        static void welcomDisplay()
+        {
+            Console.WriteLine($"Enter how many coins you want to gamble (max of 3 coins)");
+            Console.WriteLine($"If you gamble 3 coins you win on ALL Horizontal lins and Diagnal lins");
+            Console.WriteLine($"If you gamble 2 coins you can win on ALL Hozizontal lines");
+            Console.WriteLine($"If you gamble 1 coin you can win on just the middle Hozizontal line");
+        }
+        static void welcome(int coins)
+        { 
+            welcomDisplay();
+            coinDisplay(coins);
+        }
     }
 }
