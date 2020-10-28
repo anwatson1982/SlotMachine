@@ -23,9 +23,16 @@ namespace SlotMachine3
             int[,] grid = new int[3, 3];
             var ranNum = new Random();
             int stack = 20;
+            string play = "";
+            
             ///Displays welcome message with rules of the game and displays opening ammount of coins
             welcome(stack);
-        
+            Console.WriteLine($"Press any Key play press [x to quit]");
+            play = Console.ReadLine();
+            if (play == "x")
+                return;
+            else
+
             Console.Clear();
             for (stack = 20; stack > 0;)
             {
@@ -47,36 +54,42 @@ namespace SlotMachine3
                         
                     }
                 }
+
+            ///Works out winning lines from grid 
                 bool topLine = checkHorizontal(grid, 0);
                 bool midLine = checkHorizontal(grid, 1);
                 bool botLine = checkHorizontal(grid, 2);
-                if (topLine || midLine || botLine == true)
-                {
-                    Console.WriteLine($"You win =)");
-                }
-                else
-                {
-                    Console.WriteLine($"You lose =(");
-                }
+              ///Tells program what to do when each stake (1,2 or 3) is placed)
                     if (inputStake == 1)
                 {
                     stack = totalCoins(stack, checkStake.oneCoin);
-                   // stack = calcWinnings(inputStake, checkStake.oneCoin);
-                    
+                    if (midLine == true)
+                    {
+                        stack = calcWinnings(inputStake, stack, checkStake.oneCoin);
+                    }
+
                 }
                 if (inputStake == 2)
                 {
                     stack = totalCoins(stack, checkStake.twoCoins);
-                   // stack = calcWinnings(inputStake, checkStake.twoCoins);
+                    if (topLine || botLine || midLine == true)
+                    {
+                        stack = calcWinnings(inputStake, stack, checkStake.twoCoins);
+                    }
 
                 }
                 if (inputStake == 3)
                 {
                     stack = totalCoins(stack, checkStake.threeCoins);
-                    stack = calcWinnings(inputStake, checkStake.threeCoins);
+                    if (topLine || botLine || midLine == true)
+                    {
+                        stack = calcWinnings(inputStake, stack, checkStake.threeCoins); 
+                    }
+                    
 
                 }
-
+                //Displays win or lose depending on if there were any winning lines or not
+                displayResult(topLine, botLine, midLine);
 
             }
         }
@@ -145,26 +158,43 @@ namespace SlotMachine3
             
         }
         /// <summary>
+        /// Displays win or lose message 
+        /// </summary>
+        /// <param name="top">top (topLine) line of the grid</param>
+        /// <param name="middle">Middle line (midLine) of the grid</param>
+        /// <param name="bottom">Bottom line of the grid (botLine)</param>
+        static void displayResult (bool top, bool middle, bool bottom)
+        {
+            if (top || middle || bottom == true)
+            {
+                Console.WriteLine($"You Won =)");
+            }
+            else
+            {
+                Console.WriteLine($"You lose, spin again");
+            }
+        }
+        /// <summary>
         /// Calculates winnings depending on stake put down
         /// </summary>
         /// <param name="coins">ammount of coins put down for stake</param>
         /// <param name="stakeWinning">ammount of the stake put down</param>
         /// <returns>returns total amount of coins</returns>
-        static int calcWinnings (int coins, checkStake stakeWinning)
+        static int calcWinnings (int coins, int pot, checkStake stakeWinning)
         {
                 if (stakeWinning == checkStake.oneCoin)
                 {
-                    int total = coins * 1;
+                    int total = coins + 1 + pot;
                     return total;
                 }
                 if (stakeWinning == checkStake.twoCoins)
                 {
-                    int total = coins * 2;
+                    int total = coins * 2 + pot;
                     return total;
                 }
                 if (stakeWinning == checkStake.threeCoins)
                 {
-                    int total = coins * 3;
+                    int total = coins * 3 + pot;
                     return total;
                 }
                 else
@@ -172,5 +202,6 @@ namespace SlotMachine3
             }
         }
 
-    }
+    }///TODO: Creat function for Diag lines 
+     ///TODO: Clean up exit of game display total winning coins when program exitedby player 
 
