@@ -145,6 +145,12 @@ namespace SlotMachine3
             else
                 return 0;
         }
+        /// <summary>
+        /// Checks to see if stake has won and returns True if user has won or false if user has not won
+        /// </summary>
+        /// <param name="gameGrid">Grid of numbers (grid)</param>
+        /// <param name="winRow">Which row has all the same numbers</param>
+        /// <returns>True or False</returns>
         static bool checkHorizontal(int[,] gameGrid, int winRow)
         {
             if (gameGrid[winRow, 0] == gameGrid[winRow, 1] && gameGrid[winRow, 1] == gameGrid[winRow, 2])
