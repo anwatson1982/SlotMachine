@@ -35,7 +35,7 @@ namespace SlotMachine3
             else
 
                 Console.Clear();
-            ///Main for Loop of game if there are coins in the stack gives the user an option to enter 1,2 or 3 coins
+            ///Main for Loop of game, if there are coins in the stack gives the user an option to enter 1,2 or 3 coins
             ///goes through program works out if there was a win or not tells user if they have won or not and returns to 
             ///the beggining of the loop 
             ///if coins reach zero then exit the program 
@@ -101,7 +101,7 @@ namespace SlotMachine3
         /// <summary>
         /// Function to dispay ammount of coins users has 
         /// </summary>
-        /// <param name="coins">Ammount of coins user left in stack</param>
+        /// <param name="coins">Ammount of coins user has left in stack</param>
         static void coinDisplay(int coins)
         {
             Console.WriteLine($"******************");
@@ -126,8 +126,8 @@ namespace SlotMachine3
         /// <summary>
         /// This works out stake and how much to take from coin stack depending on which stake is placed
         /// </summary>
-        /// <param name="coins">Ammount of coins</param>
-        /// <param name="checking">which amount of coins to take away from coin stack (1,2 or 3)</param>
+        /// <param name="coins">Total ammount of coins</param>
+        /// <param name="checking">which amount of coins to take    `away from coin stack (1,2 or 3)</param>
         /// <returns>Total number of coins left after stake has been placed</returns>
         static int totalCoins(int coins, checkStake checking)
         {
