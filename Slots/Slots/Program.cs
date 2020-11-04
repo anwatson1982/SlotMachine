@@ -24,6 +24,8 @@ namespace SlotMachine3
             var ranNum = new Random();
             int stack = 20;
             string play = "";
+            int inputStake = 0;
+
 
             ///Displays welcome message with rules of the game and displays opening ammount of coins
             ///User to press any key to enter game or x to exit game
@@ -31,7 +33,10 @@ namespace SlotMachine3
             Console.WriteLine($"Press any Key play press [x to quit]");
             play = Console.ReadLine();
             if (play == "x")
+            {
+                Console.WriteLine($"Game over");
                 return;
+            }
             else
 
                 Console.Clear();
@@ -43,10 +48,24 @@ namespace SlotMachine3
             {
                 coinDisplay(stack);
                 ///Enter stake and uses totalCoins function to remove coins from coin stack
-                Console.WriteLine($"Enter stake you would like to play (1,2 or 3 coins)");
-                string playGame = Console.ReadLine();
-                int inputStake = Int32.Parse(playGame);
+                Console.WriteLine($"Enter stake you would like to play (1,2 or 3 coins) press [x] to quit game and collect winnings");
+                //Checks input from user is correct data type and displays message if incorrect
+                while (!int.TryParse(Console.ReadLine(), out inputStake))
+                {
+                    Console.WriteLine($"You entered an invalid character");
+                    Console.WriteLine($"Please enter the amount of coins you would like to gamble (Maximum of 3 coins)");
+                }
                 Console.Clear();
+                if (inputStake > 3)
+                {
+                    Console.WriteLine($"Maximum bet is 3 coins please enter an number between 1 and 3");
+                    while (!int.TryParse(Console.ReadLine(), out inputStake))
+                    {
+                        Console.WriteLine($"You entered an invalid character");
+                        Console.WriteLine($"Please enter the amount of coins you would like to gamble (Maximum of 3 coins)");
+                    }
+                }
+                else
                 ///Populates grid with random numbers from 0 - 2 
                 for (row = 0; row < 3; row++)
                 {
@@ -73,7 +92,7 @@ namespace SlotMachine3
                     {
                         stack = calcWinnings(inputStake, stack, checkStake.oneCoin);
                     }
-
+                    displayResult(topLine, midLine, botLine, diagLefttoRight, diagRighttoLeft, checkStake.oneCoin);
                 }
                 if (inputStake == 2)
                 {
@@ -82,7 +101,7 @@ namespace SlotMachine3
                     {
                         stack = calcWinnings(inputStake, stack, checkStake.twoCoins);
                     }
-
+                    displayResult(topLine, midLine, botLine, diagLefttoRight, diagRighttoLeft, checkStake.twoCoins);
                 }
                 if (inputStake == 3)
                 {
@@ -91,12 +110,24 @@ namespace SlotMachine3
                     {
                         stack = calcWinnings(inputStake, stack, checkStake.threeCoins);
                     }
+                    displayResult(topLine, midLine, botLine, diagLefttoRight, diagRighttoLeft, checkStake.threeCoins);
                 }
-                //Displays win or lose depending on if there were any winning lines or not
-                displayResult(topLine, botLine, midLine, diagLefttoRight, diagRighttoLeft);
+                if (stack == 0)
+                {
+                    Console.Clear();
+                    GameOverDisplay(stack);
+                }
+                Console.WriteLine($"Press any key to spin again press [x] to quit and collect you coins");
+                string SpinAgain = Console.ReadLine();
+                if (SpinAgain == "x")
+                {
+                    Console.Clear();
+                    GameOverDisplay(stack);
+                }
             }
+         
         }
-  
+
 
         /// <summary>
         /// Function to dispay ammount of coins users has 
@@ -107,6 +138,13 @@ namespace SlotMachine3
             Console.WriteLine($"******************");
             Console.WriteLine($"You have {coins} left");
             Console.WriteLine($"******************");
+        }
+        static void GameOverDisplay(int coins)
+        {
+            Console.WriteLine($"**********************");
+            Console.WriteLine($"******Game over******");
+            Console.WriteLine($"You have {coins} coins left");
+            Console.WriteLine($"**********************");
         }
         /// <summary>
         /// Function for Welcome display shows users the rules of the game
@@ -149,14 +187,14 @@ namespace SlotMachine3
             else
                 return 0;
         }
-    
+
         /// <summary>
         /// Checks to see if stake has won and returns True if user has won or false if user has not won
         /// </summary>
         /// <param name="gameGrid">Grid of numbers (grid)</param>
         /// <param name="winRow">Which row has all the same numbers</param>
         /// <returns>True or False</returns>
-        static bool checkHorizontal(int[,] gameGrid, int winRow )
+        static bool checkHorizontal(int[,] gameGrid, int winRow)
         {
             if (gameGrid[winRow, 0] == gameGrid[winRow, 1] && gameGrid[winRow, 1] == gameGrid[winRow, 2])
             {
@@ -166,7 +204,7 @@ namespace SlotMachine3
             {
                 return false;
             }
-            
+
         }
         /// <summary>
         /// Check if Diagnal lines are winning lines, using righttoleft and lefttoright enum 
@@ -185,37 +223,63 @@ namespace SlotMachine3
                     return false;
                 }
             }
-                if (DiagLine == checkDiag.RightToLeft)
-                {
-                    if (gameGrid[0, 2] == gameGrid[1, 1] && gameGrid[1, 1] == gameGrid[2, 0])
+            if (DiagLine == checkDiag.RightToLeft)
+            {
+                if (gameGrid[0, 2] == gameGrid[1, 1] && gameGrid[1, 1] == gameGrid[2, 0])
 
-                        return true;
-                    else
-                    {
-                        return false;
-                    }
-
-                }
+                    return true;
                 else
                 {
                     return false;
                 }
-            }
-            /// <summary>
-            /// Displays win or lose message 
-            /// </summary>
-            /// <param name="top">top (topLine) line of the grid</param>
-            /// <param name="middle">Middle line (midLine) of the grid</param>
-            /// <param name="bottom">Bottom line of the grid (botLine)</param>
-            static void displayResult (bool top, bool middle, bool bottom, bool DiagLtoR, bool DiagRtoL)
-        {
-            if (top || middle || bottom || DiagLtoR || DiagRtoL == true)
-            {
-                Console.WriteLine($"You Won =)");
+
             }
             else
             {
-                Console.WriteLine($"You lose, spin again");
+                return false;
+            }
+        }
+        /// <summary>
+        /// Displays win or lose message 
+        /// </summary>
+        /// <param name="top">top (topLine) line of the grid</param>
+        /// <param name="middle">Middle line (midLine) of the grid</param>
+        /// <param name="bottom">Bottom line of the grid (botLine)</param>
+        static void displayResult(bool top, bool middle, bool bottom, bool DiagLtoR, bool DiagRtoL, checkStake BetPlaced)
+        {
+            if (BetPlaced == checkStake.threeCoins)
+            {
+
+                if (top || middle || bottom || DiagLtoR || DiagRtoL == true)
+                {
+                    Console.WriteLine($"You Won =)");
+                }
+                else
+                {
+                    Console.WriteLine($"You lose, spin again");
+                }
+            }
+            if (BetPlaced == checkStake.twoCoins)
+            {
+                if (top || middle || bottom == true)
+                {
+                    Console.WriteLine($"You Won =)");
+                }
+                else
+                {
+                    Console.WriteLine($"You lose, spin again");
+                }
+            }
+            if (BetPlaced == checkStake.oneCoin)
+            {
+                if (middle == true)
+                {
+                    Console.WriteLine($"You Won =)");
+                }
+                else
+                {
+                    Console.WriteLine($"You lose, spin again");
+                }
             }
         }
         /// <summary>
@@ -224,28 +288,28 @@ namespace SlotMachine3
         /// <param name="coins">ammount of coins put down for stake</param>
         /// <param name="stakeWinning">ammount of the stake put down</param>
         /// <returns>returns total amount of coins</returns>
-        static int calcWinnings (int coins, int pot, checkStake stakeWinning)
+        static int calcWinnings(int coins, int pot, checkStake stakeWinning)
         {
-                if (stakeWinning == checkStake.oneCoin)
-                {
-                    int total = coins + 1 + pot;
-                    return total;
-                }
-                if (stakeWinning == checkStake.twoCoins)
-                {
-                    int total = coins * 2 + pot;
-                    return total;
-                }
-                if (stakeWinning == checkStake.threeCoins)
-                {
-                    int total = coins * 3 + pot;
-                    return total;
-                }
-                else
-                    return 0;
+            if (stakeWinning == checkStake.oneCoin)
+            {
+                int total = coins + 1 + pot;
+                return total;
             }
+            if (stakeWinning == checkStake.twoCoins)
+            {
+                int total = coins * 2 + pot;
+                return total;
+            }
+            if (stakeWinning == checkStake.threeCoins)
+            {
+                int total = coins * 3 + pot;
+                return total;
+            }
+            else
+                return 0;
         }
-
-
     }
-     ///TODO: Clean up exit of game display total winning coins when program exitedby player 
+
+
+}
+///TODO: Clean up exit of game display total winning coins when program exitedby player 
