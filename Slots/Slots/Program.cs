@@ -73,10 +73,7 @@ namespace SlotMachine3
                     {
                         for (col = 0; col < 3; col++)
                         {
-                            grid[row, col] = ranNum.Next(0, 3);
-                            //  Console.Write($" {grid[row, col]} ");
-                            //if (col == 2)
-                            //  Console.WriteLine();
+                            grid[row, col] = ranNum.Next(0, 3);                  
                             InputGridNumbers(row, col, grid);
                         }
                     }
@@ -129,10 +126,7 @@ namespace SlotMachine3
                     return;
                 }
             }
-
         }
-
-
         /// <summary>
         /// Function to dispay ammount of coins users has 
         /// </summary>
@@ -147,7 +141,7 @@ namespace SlotMachine3
         {
             Console.WriteLine($"**********************");
             Console.WriteLine($"******Game over******");
-            Console.WriteLine($"You have {coins} coins left");
+            Console.WriteLine($"You won {coins} coins");
             Console.WriteLine($"**********************");
         }
         /// <summary>
@@ -247,7 +241,6 @@ namespace SlotMachine3
                     return true;
                 else
                     return false;
-
             }
             else
             {
@@ -260,41 +253,33 @@ namespace SlotMachine3
         /// <param name="top">top (topLine) line of the grid</param>
         /// <param name="middle">Middle line (midLine) of the grid</param>
         /// <param name="bottom">Bottom line of the grid (botLine)</param>
+        /// <param name="diagLtoR">diagLeftToRight</param>
+        /// <param name="diagRtoL">diagRightToLeft</param>
         static void DisplayResult(bool top, bool middle, bool bottom, bool diagLtoR, bool diagRtoL, checkStake BetPlaced)
         {
+            bool winSpin = false;
             if (BetPlaced == checkStake.ThreeCoins)
             {
-
-                if (top || middle || bottom || diagLtoR || diagRtoL == true)
-                {
-                    Console.WriteLine($"You Won =)");
-                }
-                else
-                {
-                    Console.WriteLine($"You lose, spin again");
-                }
+                if (top || middle || bottom || diagLtoR || diagRtoL)
+                    winSpin = true;            
             }
             if (BetPlaced == checkStake.TwoCoins)
             {
-                if (top || middle || bottom == true)
-                {
-                    Console.WriteLine($"You Won =)");
-                }
-                else
-                {
-                    Console.WriteLine($"You lose, spin again");
-                }
+                if (top || middle || bottom)
+                    winSpin = true;
             }
             if (BetPlaced == checkStake.OneCoin)
             {
                 if (middle == true)
-                {
-                    Console.WriteLine($"You Won =)");
-                }
-                else
-                {
-                    Console.WriteLine($"You lose, spin again");
-                }
+                    winSpin = true;
+            }
+            if (winSpin)
+            {
+                Console.WriteLine($"You Won =)");
+            }
+            else
+            {
+                Console.WriteLine($"You lost =( , spin again");
             }
         }
         /// <summary>
@@ -319,10 +304,8 @@ namespace SlotMachine3
                     int total2 = coins * 3 + pot;
                     return total2;
                 default:
-                    return 0;
-                
-            }
-            
+                    return 0;   
+            }     
         }
     }
 }
