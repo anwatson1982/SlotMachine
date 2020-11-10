@@ -27,7 +27,7 @@ namespace SlotMachine3
             int inputStake = 0;
 
 
-            var x = int.Parse(Console.ReadLine());
+         
 
             ///Displays welcome message with rules of the game and displays opening ammount of coins
             ///User to press any key to enter game or x to exit game
@@ -125,6 +125,7 @@ namespace SlotMachine3
                 {
                     Console.Clear();
                     GameOverDisplay(stack);
+                    return;
                 }
             }
 
@@ -206,7 +207,6 @@ namespace SlotMachine3
             {
                 return false;
             }
-
         }
         /// <summary>
         /// Check if Diagnal lines are winning lines, using righttoleft and lefttoright enum 
@@ -289,23 +289,24 @@ namespace SlotMachine3
         /// <returns>returns total amount of coins</returns>
         static int CalcWinnings(int coins, int pot, checkStake StakeWinning)
         {
-            if (StakeWinning == checkStake.OneCoin)
+            checkStake SelectedStake = (StakeWinning);
+
+            switch (StakeWinning)
             {
-                int total = coins + 1 + pot;
-                return total;
+                case checkStake.OneCoin:
+                    int total = coins + 1 + pot;
+                    return total;
+                case checkStake.TwoCoins:
+                    int total1 = coins * 2 + pot;
+                    return total1;
+                case checkStake.ThreeCoins:
+                    int total2 = coins * 3 + pot;
+                    return total2;
+                default:
+                    return 0;
+                
             }
-            if (StakeWinning == checkStake.TwoCoins)
-            {
-                int total = coins * 2 + pot;
-                return total;
-            }
-            if (StakeWinning == checkStake.ThreeCoins)
-            {
-                int total = coins * 3 + pot;
-                return total;
-            }
-            else
-                return 0;
+            
         }
     }
 }
