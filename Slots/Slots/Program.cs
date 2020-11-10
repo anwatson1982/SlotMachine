@@ -74,9 +74,10 @@ namespace SlotMachine3
                         for (col = 0; col < 3; col++)
                         {
                             grid[row, col] = ranNum.Next(0, 3);
-                            Console.Write($" {grid[row, col]} ");
-                            if (col == 2)
-                                Console.WriteLine();
+                            //  Console.Write($" {grid[row, col]} ");
+                            //if (col == 2)
+                            //  Console.WriteLine();
+                            InputGridNumbers(row, col, grid);
                         }
                     }
                 ///Works out winning lines from grid 
@@ -164,6 +165,21 @@ namespace SlotMachine3
             WelcomDisplay();
             CoinDisplay(coins);
         }
+        /// <summary>
+        /// Inputs Random numbers in to grid format
+        /// </summary>
+        /// <param name="gridRow">row</param>
+        /// <param name="gridCol">col</param>
+        /// <param name="gameGrid">grid</param>
+        static void InputGridNumbers(int gridRow, int gridCol, int[,] gameGrid)
+        {
+            Console.Write($" {gameGrid[gridRow, gridCol]} ");
+            if (gridCol == 2)
+            {
+                Console.WriteLine();
+            }
+        }
+     
         /// <summary>
         /// This works out stake and how much to take from coin stack depending on which stake is placed
         /// </summary>
